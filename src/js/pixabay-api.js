@@ -1,20 +1,20 @@
-function getImagesByQuery(query) {
-  const url = `https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&per_page=12&page=1`;
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
+
+import axios from 'axios';
+
+const BASE_URL = 'https://pixabay.com/api/';
+const API_KEY = '51416080-d2904871fd7ba0d85f04cdd30';
+
+
+export function getImagesByQuery(query) {
+  return axios
+    .get(BASE_URL, {
+      params: {
+        key: API_KEY,
+        q: query,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+      },
     })
-    .then(data => {
-      if (data.hits.length === 0) {
-        throw new Error('No images found');
-      }
-      return data.hits;
-    })
-    .catch(error => {
-      console.error('Error fetching images:', error);
-      throw error;
-    });
+    .then(response => response.data);
 }
